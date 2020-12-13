@@ -1,4 +1,4 @@
-package service
+package client
 
 import (
 	"fmt"
@@ -18,7 +18,7 @@ func InitSqsClient(sess *session.Session) {
 	sqsClient = sqs.New(sess)
 }
 
-func PollMessages(chn chan<- *sqs.Message) {
+func PollMessagesFromSqs(chn chan<- *sqs.Message) {
 
 	for {
 		output, err := sqsClient.ReceiveMessage(&sqs.ReceiveMessageInput{
@@ -38,7 +38,7 @@ func PollMessages(chn chan<- *sqs.Message) {
 	}
 }
 
-func DeleteMessage(msg *sqs.Message) {
+func DeleteSqsMessage(msg *sqs.Message) {
 
 	sqsClient.DeleteMessage(&sqs.DeleteMessageInput{
 		QueueUrl:      aws.String(os.Getenv("SQS_QUEUE_URL")),
